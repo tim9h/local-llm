@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: local-llm
+
+  ai:
+    ollama:
+      base-url: http://ollama:11434
+      chat:
+        options:
+          model: llama3.2:1b
+
+chatbot:
+  context: |
+    You are an AI assistant modeled after a friendly robot. 
