@@ -6,8 +6,6 @@ services:
       - "11434:11434"
     volumes:
       - ollama_storage:/root/.ollama
-    # CDI device mapping for Podman
-    # Since your 'name:' in nvidia.yaml is 'all', this is the correct syntax:
     devices:
       - nvidia.com/gpu=all
     environment:

@@ -1,11 +1,11 @@
 # Stage 1: Build
 FROM eclipse-temurin:25-jdk-alpine AS build
-# Install Maven manually since an official 'maven:*-java25' image doesn't exist yet
 RUN apk add --no-cache maven
 WORKDIR /app
 COPY pom.xml .
+RUN mvn dependency:go-offline
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package
 
 # Stage 2: Run
 FROM eclipse-temurin:25-jre-alpine
