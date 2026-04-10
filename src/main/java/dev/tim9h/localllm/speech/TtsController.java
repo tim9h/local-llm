@@ -20,10 +20,8 @@ public class TtsController {
 	}
 
 	@GetMapping(value = "/api/tts", produces = "audio/wav")
-	public ResponseEntity<byte[]> textToSpeech(@RequestParam(value = "text") String text,
-			@RequestParam(value = "voice", required = false) String voice) {
-		var effectiveVoice = (voice != null && !voice.isBlank()) ? voice : defaultVoice;
-		var audioData = ttsService.generateSpeech(text, effectiveVoice);
+	public ResponseEntity<byte[]> textToSpeech(@RequestParam(value = "text") String text) {
+		var audioData = ttsService.generateSpeech(text);
 		return ResponseEntity.ok().contentType(MediaType.valueOf("audio/wav")).body(audioData);
 	}
 
