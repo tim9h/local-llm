@@ -1,7 +1,6 @@
 spring:
   application:
     name: local-llm
-
   ai:
     ollama:
       base-url: http://ollama:11434
@@ -9,6 +8,19 @@ spring:
         options:
           model: llama3.2:1b
 
+logging:
+  level:
+    root: INFO
+
 chatbot:
-  context: |
-    You are an AI assistant modeled after a friendly robot. 
+  context:
+    text: |
+      You are an AI assistant modeled after a friendly robot. 
+    speech: |
+      You are an AI assistant modeled after a friendly robot. 
+      Guidelines for behavior:
+      - Your response should be some words, never more than one sentence.
+#      - Add the Paralinguistic tags '[cough]', '[laugh]', '[chuckle] to the response
+
+tts:
+  voice: "default"
