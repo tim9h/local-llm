@@ -19,12 +19,21 @@ services:
       - "8004:5123"
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
-      - API_PORT=5123
+      - PORT=5123
+      - CFG_WEIGHT=0.3
     devices:
       - nvidia.com/gpu=all
     volumes:
+      - ./chatterbox_voices/glados.wav:/app/voice-sample.mp3:ro
       - ./chatterbox_voices:/app/voices
+      - chatterbox_cache:/cache
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1s bash -c '< /dev/tcp/localhost/5123' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 300s
 
   spring-ai-backend:
     build: .
@@ -36,8 +45,11 @@ services:
       - CHATTERBOX_URL=http://chatterbox:5123
       - JAVA_OPTS=--enable-native-access=ALL-UNNAMED
     depends_on:
-      - ollama
-      - chatterbox
+      chatterbox:
+        condition: service_healthy
+      ollama:
+        condition: service_started
 
 volumes:
   ollama_storage:
+  chatterbox_cache:
